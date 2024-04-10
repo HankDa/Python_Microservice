@@ -12,3 +12,18 @@ services:
     # It mounts the current directory (the directory containing the Docker Compose file) into the /app directory within the containe
     volumes:
       - .:/app
+    # db container should run first.
+    depends_on:
+      - db
+  db:
+    image: mysql:5.7.22
+    restart: always
+    environment:
+      MYSQL_DATABASE: admin
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - .dbdata:/var/lib/mysql
+    ports:
+      - 33066:3306
