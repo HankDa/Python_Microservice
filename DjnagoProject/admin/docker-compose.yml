@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  backend:
+  # This section specifies how to build the Docker image for the service.
+    build:
+      #  The build context is set to the current directory (.), meaning Docker will look for the Dockerfile in the current directory.
+      context: .
+      dockerfile: Dockerfile
+    # This section maps ports between the Docker container and the host machine. (host:container)
+    ports:
+      - 8000:8000
+    # It mounts the current directory (the directory containing the Docker Compose file) into the /app directory within the containe
+    volumes:
+      - .:/app
