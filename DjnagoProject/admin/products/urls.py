@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from .views import ProductViewSet
+from .views import ProductViewSet, UserAPIView
 
 urlpatterns = [
     path('products/', ProductViewSet.as_view({
@@ -28,4 +28,6 @@ urlpatterns = [
         'put': 'update',
         'delete': 'destroy'
     })),
+
+    path('users/', UserAPIView.as_view())
 ]
