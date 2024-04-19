@@ -6,7 +6,7 @@ from sqlalchemy import UniqueConstraint
 
 # This creates a Flask application instance.
 app = Flask(__name__)
-# user name, password, service name, schema name
+# mysql://username:password@server/db
 app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:root@db/main'
 CORS(app)
 

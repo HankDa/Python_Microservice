@@ -29,6 +29,7 @@ __pycache__/
 .env
 .env.local
 .env.*
+*.json
 
 # IDE or editor settings
 .vscode/
