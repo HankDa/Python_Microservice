@@ -11,4 +11,4 @@ RUN pip install -r requirements.txt
 COPY . /app
 # CMD is used to specify the default command to run when a container based on the image is started.
 # This specifies the host and port on which the development server will listen for incoming connections.
-CMD python manage.py runserver 0.0.0.0:8000
+# CMD python manage.py runserver 0.0.0.0:8000

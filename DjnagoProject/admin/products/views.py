@@ -3,12 +3,16 @@ from rest_framework.views import APIView
 from .models import Product, User
 from .serializers import ProductSerializer, UserSerializer
 from rest_framework.response import Response
+from .producer import publish
+import json
 
 
 class ProductViewSet(viewsets.ViewSet):
     def list(self, request):
         products = Product.objects.all()
         serializer = ProductSerializer(products, many=True)
+        # get payload: {"routingKey":"admin"}
+        publish(request.data["routingKey"])
         return Response(serializer.data)
        
     def create(self, request):

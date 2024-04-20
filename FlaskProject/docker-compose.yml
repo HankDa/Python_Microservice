@@ -6,6 +6,7 @@ services:
       #  The build context is set to the current directory (.), meaning Docker will look for the Dockerfile in the current directory.
       context: .
       dockerfile: Dockerfile
+    command: 'python main.py'
     # This section maps ports between the Docker container and the host machine. (host:container)
     ports:
       - 8001:5000
@@ -13,6 +14,15 @@ services:
     volumes:
       - .:/app
     # db container should run first.
+    depends_on:
+      - db
+
+  queue:
+    build:
+      context: .
+      # TODO: create a new dockerfile as we only need consumer.py and basicClient.py
+      dockerfile: Dockerfile
+    command:  'python consumer.py'
     depends_on:
       - db
   db:

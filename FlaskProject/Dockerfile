@@ -9,6 +9,3 @@ COPY requirements.txt /app/requirements.txt
 RUN pip install -r requirements.txt
 # copy all the file "." under admin to container
 COPY . /app
-# CMD is used to specify the default command to run when a container based on the image is started.
-# This specifies the host and port on which the development server will listen for incoming connections.
-CMD python main.py
