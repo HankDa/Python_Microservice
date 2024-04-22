@@ -20,12 +20,13 @@ class BasicPikaClient:
 
 class BasicMessageSender(BasicPikaClient):
 
-    def send_message(self, exchange, routing_key, body):
+    def send_message(self, exchange, routing_key, body, properties):
         #TODO: why should we declare a new channel here? 
         channel = self.connection.channel()
         channel.basic_publish(exchange=exchange,
                               routing_key=routing_key,
-                              body=body)
+                              body=body,
+                              properties=properties)
         print(f"Sent message. Exchange: {exchange}, Routing Key: {routing_key}, Body: {body}")
 
     def close(self):
@@ -34,14 +35,12 @@ class BasicMessageSender(BasicPikaClient):
         self.connection.close()
 
 
-def publish(routing_key):
+def publish(method, body):
 
     # Initialize Basic Message Sender which creates a connection
-    # and channel for sending messages.
+    # TODO: Read credential from config.json. What is the more efficient way to do that?
     with open("config.json") as config_file:
         config_data = json.load(config_file)
-    # Create Basic Message Receiver which creates a connection
-    # and channel for consuming messages.
     
     basic_message_sender = BasicMessageSender(
         config_data["MQ_BROKER_ID"],
@@ -49,13 +48,14 @@ def publish(routing_key):
         config_data["MQ_PASSWORD"],
         config_data["MQ_REGION"]
     )
-    
+    properties = pika.BasicProperties(method)
+    print("properties:", properties)
     # Send a message to the queue.
-    basic_message_sender.send_message(exchange="", routing_key=routing_key, body=f'Hello from {routing_key}')
+    # json.dumps() convert json to string
+    basic_message_sender.send_message(exchange="", 
+                                      routing_key="main", 
+                                      body=json.dumps(body),
+                                      properties=properties)
 
     # Close connections.
     basic_message_sender.close()
-
-
-if __name__ == "__main__":
-    publish()
