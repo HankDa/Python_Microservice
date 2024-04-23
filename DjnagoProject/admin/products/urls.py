@@ -29,5 +29,5 @@ urlpatterns = [
         'delete': 'destroy'
     })),
 
-    path('users/', UserAPIView.as_view())
+    path('user/', UserAPIView.as_view())
 ]
