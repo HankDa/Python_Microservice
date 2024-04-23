@@ -37,37 +37,35 @@ class BasicMessageReceiver(BasicPikaClient):
     def consume_messages(self, queue):
         def callback(ch, method, properties, body):
             print(" [x] Received %r" % body)
-            data = json.loads(body)
             print(f"properties.content_type:{properties.content_type}")
-
-            if properties.content_type == "product_created":
-                # create a new object
-                # publish("product_created", serializer.data)
-                product = Product(id=data['id'], title=data['title'], image=data['image'])
-                with app.app_context():
+            with app.app_context():
+                data = json.loads(body)
+                if properties.content_type == "product_created":
+                    # create a new object
+                    # publish("product_created", serializer.data)
+                    product = Product(id=data['id'], title=data['title'], image=data['image'])
                     db.session.add(product)
                     db.session.commit()
-                print("product_created")
+                    print("product_created")
 
-            elif properties.content_type == "product_updated":
-                # query the object with specific id
-                # publish("product_updated", serializer.data)
-                product = Product.query.get(data['id'])
-                # modify the object
-                product.title = data['title']
-                product.image = data['image']
-                # commit the change
-                with app.app_context():
+                elif properties.content_type == "product_updated":
+                    # query the object with specific id
+                    # publish("product_updated", serializer.data)
+                    product = Product.query.get(data['id'])
+                    # modify the object
+                    product.title = data['title']
+                    product.image = data['image']
+                    # commit the change
                     db.session.commit()
-                print("product_updated")
-                
-            elif properties.content_type == "product_deleted":
-                # publish("product_deleted", pk)
-                product = Product.query.get(data)
-                with app.app_context():
+                    print("product_updated")
+                    
+                elif properties.content_type == "product_deleted":
+                    # publish("product_deleted", pk)
+                    product = Product.query.get(data)
+                    print("product:", product)
                     db.session.delete(product)
                     db.session.commit()
-                print("product_deleted")
+                    print("product_deleted")
 
         self.channel.basic_consume(queue=queue, on_message_callback=callback, 
                                    auto_ack=True)
