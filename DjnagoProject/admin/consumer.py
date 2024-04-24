@@ -1,6 +1,10 @@
-import json
-import ssl
-import pika
+import json, ssl, pika, os, django
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "admin.settings")
+django.setup()
+
+# consumer.py is outside of Django
+from products.models import Product
 
 class BasicPikaClient:
 
@@ -34,7 +38,14 @@ class BasicMessageReceiver(BasicPikaClient):
 
     def consume_messages(self, queue):
         def callback(ch, method, properties, body):
-            print(" [x] Received %r" % body)
+            print('Received in admin')
+            id = json.loads(body)
+            print(id)
+            # as we don't reply for REST requst, we don't used serializer here.
+            product = Product.objects.get(id=id)
+            product.like = product.like + 1
+            product.save()
+            print('Product likes increased!')
 
         self.channel.basic_consume(queue=queue, on_message_callback=callback, auto_ack=True)
 

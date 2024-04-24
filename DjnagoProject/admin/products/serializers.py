@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Product, User
 
-
+# Django model instance <-> JSON 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product

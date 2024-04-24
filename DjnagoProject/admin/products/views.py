@@ -22,7 +22,9 @@ class ProductViewSet(viewsets.ViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def retrieve(self, request, pk=None):
+        # product is a model type instance
         product = Product.objects.get(id=pk)
+        # serializse product instance to json type
         serializer = ProductSerializer(product)
         return Response(serializer.data)
 
@@ -30,6 +32,7 @@ class ProductViewSet(viewsets.ViewSet):
         product = Product.objects.get(id=pk)
         serializer = ProductSerializer(instance=product, data=request.data)
         serializer.is_valid(raise_exception=True)
+        # this will call instance.save() in background to update instance 
         serializer.save()
         publish("product_updated", serializer.data)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
