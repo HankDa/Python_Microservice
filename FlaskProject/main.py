@@ -34,7 +34,7 @@ class ProductsUser(db.Model):
     user_id = db.Column(db.Integer)
     product_id = db.Column(db.Integer)
     # TODO: not working actually
-    UniqueConstraint('user_id', 'product_id', name='user_product_unique')
+    UniqueConstraint(user_id, product_id, name='user_product_unique')
 
 @app.route('/api/products')
 def index():
