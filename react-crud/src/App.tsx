@@ -14,6 +14,7 @@ function App() {
                 <Route path='/admin/products' exact component={Products}/>
                 <Route path='/admin/products/create' exact component={ProductsCreate}/>
                 <Route path='/admin/products/:id/edit' exact component={ProductsEdit}/>
+                <Route path='/admin/users' exact component={ProductsEdit}/>
             </BrowserRouter>
 
         </div>

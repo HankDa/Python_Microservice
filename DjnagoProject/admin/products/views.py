@@ -43,7 +43,7 @@ class ProductViewSet(viewsets.ViewSet):
         publish("product_deleted", pk)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
+# TODO: need implement more reasonable
 class UserAPIView(APIView):
     def get(self, request):
         users = User.objects.all()

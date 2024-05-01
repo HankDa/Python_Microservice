@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {Product} from "../interfaces/product";
-
+import Wrapper from "../admin/Wrapper";
 const Main = () => {
     const [products, setProducts] = useState([] as Product[]);
 
     useEffect(() => {
         (
             async () => {
-                const response = await fetch('http://localhost:8001/api/products');
+                const response = await fetch('http://localhost:8000/api/products');
 
                 const data = await response.json();
-
+                console.log("data",data)
                 setProducts(data);
             }
         )();
@@ -23,17 +23,20 @@ const Main = () => {
         });
 
         setProducts(products.map(
+
             (p: Product) => {
+                console.log("p",p);
                 if (p.id === id) {
                     p.likes++;
                 }
-
+                console.log(p)
                 return p;
             }
         ));
     }
 
     return (
+        <Wrapper>
         <main role="main">
             <div className="album py-5 bg-light">
                 <div className="container">
@@ -68,6 +71,7 @@ const Main = () => {
             </div>
 
         </main>
+        </Wrapper>
     );
 };
 

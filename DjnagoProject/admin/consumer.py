@@ -43,7 +43,7 @@ class BasicMessageReceiver(BasicPikaClient):
             print(id)
             # as we don't reply for REST requst, we don't used serializer here.
             product = Product.objects.get(id=id)
-            product.like = product.like + 1
+            product.likes = product.likes + 1
             product.save()
             print('Product likes increased!')
 
