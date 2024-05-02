@@ -43,7 +43,7 @@ class ProductViewSet(viewsets.ViewSet):
         publish("product_deleted", pk)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-# TODO: need implement more reasonable
+# TODO: Get users list instead, and Flask app should not call this function.
 class UserAPIView(APIView):
     def get(self, request):
         users = User.objects.all()
