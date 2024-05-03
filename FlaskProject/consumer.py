@@ -1,7 +1,8 @@
 import json
 import ssl
 import pika
-from main import Product, db, app
+from app.models import Product
+from app import db, app
 
 
 class BasicPikaClient:
@@ -93,6 +94,7 @@ if __name__ == "__main__":
 
     # Create Basic Message Receiver which creates a connection
     # and channel for consuming messages.
+    # TODO: How to load configuration file securly and efficiently?
     with open("config.json") as config_file:
         config_data = json.load(config_file)
     
