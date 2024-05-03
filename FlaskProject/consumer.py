@@ -1,7 +1,7 @@
 import json
 import ssl
 import pika
-from app.models import Product
+from app.models import Product, User
 from app import db, app
 
 
@@ -44,10 +44,14 @@ class BasicMessageReceiver(BasicPikaClient):
                 if properties.content_type == "product_created":
                     # create a new object
                     # publish("product_created", serializer.data)
-                    product = Product(id=data['id'], title=data['title'], image=data['image'])
-                    db.session.add(product)
-                    db.session.commit()
-                    print("product_created")
+                    try:
+                        product = Product(id=data['id'], title=data['title'], image=data['image'])
+                        db.session.add(product)
+                        db.session.commit()
+                        print("product_created")
+                    except Exception as e:
+                        # Handle any exceptions that may occur during the creation process
+                        print("Error creating product:", e)
 
                 elif properties.content_type == "product_updated":
                     # query the object with specific id
@@ -67,6 +71,13 @@ class BasicMessageReceiver(BasicPikaClient):
                     db.session.delete(product)
                     db.session.commit()
                     print("product_deleted")
+
+                elif properties.content_type == "user_created":
+                    # publish("product_deleted", pk)
+                    user = User(id=data)
+                    db.session.add(user)
+                    db.session.commit()
+                    print("user_created")
 
         self.channel.basic_consume(queue=queue, on_message_callback=callback, 
                                    auto_ack=True)

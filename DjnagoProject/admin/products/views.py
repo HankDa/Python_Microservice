@@ -56,5 +56,9 @@ class UserAPIView(APIView):
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        # Retrieve the ID of the newly created user
+        user_id = serializer.data.get('id')
+        # Publish the event with the obtained user ID
+        publish("user_created", user_id)
         return Response(serializer.data, status.HTTP_201_CREATED)
 

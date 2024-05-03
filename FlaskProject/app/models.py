@@ -19,3 +19,9 @@ class ProductsUser(db.Model):
     product_id = db.Column(db.Integer)
     # TODO: not working actually
     UniqueConstraint(user_id, product_id, name='user_product_unique')
+
+@dataclass
+class User(db.Model):
+    id: int
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=False)

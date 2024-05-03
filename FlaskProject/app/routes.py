@@ -1,5 +1,5 @@
 from flask import Blueprint, abort, jsonify
-from app.models import Product, ProductsUser
+from app.models import Product, ProductsUser, User
 from producer import publish
 import requests
 
@@ -19,11 +19,11 @@ def like(id):
     then add a this user to ProductsUser table.
     '''
     # TODO: this part is not really reasonable the two services shoud not communicate directly?
-    req = requests.get('http://docker.for.mac.localhost:8000/api/user')
-    json = req.json()
+    random_user = User.query.order_by(db.func.random()).first()
+    print(random_user.id)
 
     try:
-        productUser = ProductsUser(user_id=json['id'], product_id=id)
+        productUser = ProductsUser(user_id=random_user.id, product_id=id)
         db.session.add(productUser)
         db.session.commit()
         publish("product_liked", id)
